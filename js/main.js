@@ -16,7 +16,8 @@ function getRandomNumber(min, max) {
   // возвращаем случайное число с помощью метода Math.random и округляя число до целого
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
- console.log(getRandomNumber(2, 6,));
+alert(getRandomNumber(2, 7));
+
 
 
 //Задание №2. Функция, возвращающая случайное число с плавающей точкой из переданного диапазона включительно.
@@ -36,4 +37,4 @@ function getRandomQuantity(min, max, precision) { //
   let randomQuantity = min + ((Math.floor(((Math.random() * (max - min + 1))) * 10 ** precision)) / (10 ** precision));
   return randomQuantity;
 }
-console.log(getRandomQuantity(2, 31, 5));
+alert(getRandomQuantity(2.2, 5, 4));

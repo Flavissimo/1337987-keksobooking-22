@@ -35,8 +35,10 @@ const PHOTO_TYPES = [
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
+const PHOTO_AMOUNT = 10;//длина
+
 //ищем случайное число
-function getRandomNumber(min, max) {
+const getRandomNumber = (min, max) => {
   //если max меньше min, введем переменную буфер
   if (max < min) {
     let buffer = max;
@@ -53,7 +55,7 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 //ищем случайное число с плавающей точкой
-function getRandomQuantity(min, max, precision) { //
+const getRandomQuantity = (min, max, precision) => {
   if (max < min) {
     let buffer = max;
     max = min;
@@ -66,63 +68,62 @@ function getRandomQuantity(min, max, precision) { //
   if (precision > 5){
     precision = 5;
   }
-  let randomQuantity = min + ((Math.floor(((Math.random() * (max - min + 1))) * 10 ** precision)) / (10 ** precision));
+  const randomQuantity = min + ((Math.floor(((Math.random() * (max - min + 1))) * 10 ** precision)) / (10 ** precision));
   return randomQuantity;
 }
 //массив строк — массив случайной длины из значений
-let shuffle = (array) => { //взято: https://learn.javascript.ru/task/shuffle
+const shuffle = (array) => { //взято: https://learn.javascript.ru/task/shuffle
   for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1)); // случайный индекс от 0 до i
+    const j = Math.floor(Math.random() * (i + 1)); // случайный индекс от 0 до i
     [array[i], array[j]] = [array[j], array[i]];//перемешали элементы массива
   }
 
   return array;
 };
-//случайное число длины
-const PHOTO_AMOUNT = 10;//длина
-let perem = getRandomNumber(1, PHOTO_AMOUNT);
-//console.log(perem);
 
-let myNewFunction = (array1, size) => {
-  const PHOTOS = [];//новый массив, куда записываем случайный элемент
+const myNewFunction = (array1, size) => {
+  const photos = [];//новый массив, куда записываем случайный элемент
   for (let i = 0; i < size; i++) {
     let element = array1[0, getRandomNumber(0, array1.length-1)];
-    PHOTOS.push(element);
+    photos.push(element);
   }
-  return PHOTOS;
+  return photos;
 };
 //координаты в плавающей точкой
-let getLocation = () =>{
-  let location = {
+const getLocation = () =>{
+  const location = {
     x: getRandomQuantity(35.6500, 35.7000, 5),
     y: getRandomQuantity(139.7000, 139.8000, 5),
   };
   return location;
 };
 //Общий объект
-let createHotel = () => {
-  let newArray = shuffle(FEATURING_TYPES);//новый сгенерированный массив
+const createHotel = () => {
+  //случайное число длины
+  const randomPhotoLength = getRandomNumber(1, PHOTO_AMOUNT);
+  //console.log(perem);
+  let newArray = shuffle(FEATURING_TYPES);//новый сгенерированный массив//т.к. в массив перезаписываем значение -то LET. ЗАПОМНИ!!
   newArray = newArray.slice(0, getRandomNumber(1, newArray.length-1));//метод slice
   //console.log(newArray);
-  let PHOTOS = myNewFunction(PHOTO_TYPES, perem);
+  const photos = myNewFunction(PHOTO_TYPES, randomPhotoLength);
   //перезаписываем координаты в новую переменную
-  let location2 = getLocation();
+  const location = getLocation();
   return  {
     author:{//первый объект
       avatar: `img/avatars/user0${getRandomNumber(1,8)}.png`,
     },
     offer:{//второй объект
-      title: TITLING_TYPES[getRandomNumber(0,TITLING_TYPES.length -1)],
-      address: (`${location2.x}, ${location2.y}`),//интерполяция
+      title: TITLING_TYPES[getRandomNumber(0, TITLING_TYPES.length -1)],
+      address: (`${location.x}, ${location.y}`),//интерполяция
       price: getRandomNumber(1, 1000000),//Любое положительное число
       types: HOUSING_TYPES[getRandomNumber(0,HOUSING_TYPES.length-1)],
       rooms: getRandomNumber(1, 150),//Любое положительное число
       guests: getRandomNumber(1, 300),//Любое положительное число
-      checkin:TIMES[getRandomNumber(0,TIMES.length-1)],
-      checkout:TIMES[getRandomNumber(0,TIMES.length-1)],
+      checkin:TIMES[getRandomNumber(0, TIMES.length-1)],
+      checkout:TIMES[getRandomNumber(0, TIMES.length-1)],
       featurs: newArray,//массив строк — массив случайной длины из значений
-      description: DESCRIPTION_TYPES[getRandomNumber(0,DESCRIPTION_TYPES.length-1)],
-      photos: PHOTOS,//массив строк — массив случайной длины из значений
+      description: DESCRIPTION_TYPES[getRandomNumber(0, DESCRIPTION_TYPES.length-1)],
+      photos: photos,//массив строк — массив случайной длины из значений
     },
     location:{
       x: getRandomQuantity(35.6500, 35.7000, 5),

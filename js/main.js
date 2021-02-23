@@ -84,7 +84,7 @@ const shuffle = (array) => { //взято: https://learn.javascript.ru/task/shuf
 const myNewFunction = (array1, size) => {
   const photos = [];//новый массив, куда записываем случайный элемент
   for (let i = 0; i < size; i++) {
-    let element = array1[0, getRandomNumber(0, array1.length-1)];
+    const element = array1[0, getRandomNumber(0, array1.length-1)];
     photos.push(element);
   }
   return photos;
@@ -101,9 +101,8 @@ const getLocation = () =>{
 const createHotel = () => {
   //случайное число длины
   const randomPhotoLength = getRandomNumber(1, PHOTO_AMOUNT);
-  //console.log(perem);
-  let newArray = shuffle(FEATURING_TYPES);//новый сгенерированный массив//т.к. в массив перезаписываем значение -то LET. ЗАПОМНИ!!
-  newArray = newArray.slice(0, getRandomNumber(1, newArray.length-1));//метод slice
+  //console.log(randomPhotoLength);
+  const newArray = shuffle(FEATURING_TYPES).slice(0, getRandomNumber(1, newArray.length-1));//новый сгенерированный массив//метод slice
   //console.log(newArray);
   const photos = myNewFunction(PHOTO_TYPES, randomPhotoLength);
   //перезаписываем координаты в новую переменную

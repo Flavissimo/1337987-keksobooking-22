@@ -124,10 +124,7 @@ const createHotel = () => {
       description: DESCRIPTION_TYPES[getRandomNumber(0, DESCRIPTION_TYPES.length-1)],
       photos: photos,//массив строк — массив случайной длины из значений
     },
-    location:{
-      x: getRandomQuantity(35.6500, 35.7000, 5),
-      y: getRandomQuantity(139.7000, 139.8000, 5),
-    },
+    location,
   };
 };
 createHotel();

@@ -1,7 +1,7 @@
 //точка входа
 //import _ from 'lodash'; после установки сборщика модулей Webpack, спросить.
 import {TITLING_TYPES, HOUSING_TYPES, TIMES, FEATURING_TYPES, DESCRIPTION_TYPES, PHOTO_TYPES, PHOTO_AMOUNT} from './data.js';
-import {getRandomNumber, shuffle, myNewFunction, getLocation} from './util.js';//избегай цикличную зависимость!
+import {getRandomNumber, features, myNewFunction, getLocation} from './util.js';//избегай цикличную зависимость!
 
 
 //Общий объект
@@ -9,7 +9,7 @@ const createHotel = () => {
   //случайное число длины
   const randomPhotoLength = getRandomNumber(1, PHOTO_AMOUNT);
   //console.log(randomPhotoLength);
-  const newArray = shuffle(FEATURING_TYPES).slice(0, getRandomNumber(1, newArray.length-1));//новый сгенерированный массив//метод slice
+  const newArray = features(FEATURING_TYPES).slice(0, getRandomNumber(1, FEATURING_TYPES.length-1));//новый сгенерированный массив//метод slice
   //console.log(newArray);
   const photos = myNewFunction(PHOTO_TYPES, randomPhotoLength);
   //перезаписываем координаты в новую переменную

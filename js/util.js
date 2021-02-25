@@ -34,7 +34,7 @@ const getRandomQuantity = (min, max, precision) => {
   return randomQuantity;
 }
 //массив строк — массив случайной длины из значений
-const shuffle = (array) => { //взято: https://learn.javascript.ru/task/shuffle
+const features = (array) => { //взято: https://learn.javascript.ru/task/shuffle
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1)); // случайный индекс от 0 до i
     [array[i], array[j]] = [array[j], array[i]];//перемешали элементы массива
@@ -59,4 +59,4 @@ const getLocation = () =>{
   };
   return location;
 };
-export {getRandomNumber, getRandomQuantity, shuffle, myNewFunction, getLocation};
+export {getRandomNumber, getRandomQuantity, features, myNewFunction, getLocation};

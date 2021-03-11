@@ -1,5 +1,5 @@
 //модуль, который создаёт данные
-import {getRandomNumber, features, myNewFunction, getLocation} from './util.js';//избегай цикличную зависимость!
+import {getRandomNumber, features, getRandomArray, getLocation} from './util.js';//избегай цикличную зависимость!
 
 const TITLING_TYPES = [
   'Приветствие 1',
@@ -47,7 +47,7 @@ const createHotel = () => {
   //console.log(randomPhotoLength);
   const newArray = features(FEATURING_TYPES).slice(0, getRandomNumber(1, FEATURING_TYPES.length-1));//новый сгенерированный массив//метод slice
   //console.log(newArray);
-  const photos = myNewFunction(PHOTO_TYPES, randomPhotoLength);
+  const photos = getRandomArray(PHOTO_TYPES, randomPhotoLength);
   //перезаписываем координаты в новую переменную
   const location = getLocation();
   return  {
@@ -56,7 +56,7 @@ const createHotel = () => {
     },
     offer:{//второй объект
       title: TITLING_TYPES[getRandomNumber(0, TITLING_TYPES.length -1)],
-      address: (`${location.x}, ${location.y}`),//интерполяция
+      address: (`${location.lat}, ${location.lng}`),//интерполяция
       price: getRandomNumber(1, 1000000),//Любое положительное число
       type: HOUSING_TYPES[getRandomNumber(0,HOUSING_TYPES.length-1)],
       rooms: getRandomNumber(1, 150),//Любое положительное число

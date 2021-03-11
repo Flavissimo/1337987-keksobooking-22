@@ -43,10 +43,10 @@ const features = (array) => { //взято: https://learn.javascript.ru/task/shu
   return array;
 };
 
-const myNewFunction = (array1, size) => {
+const myNewFunction = (array, size) => {
   const photos = [];//новый массив, куда записываем случайный элемент
   for (let i = 0; i < size; i++) {
-    const element = array1[0, getRandomNumber(0, array1.length-1)];
+    const element = array[0, getRandomNumber(0, array.length-1)];
     photos.push(element);
   }
   return photos;
@@ -59,4 +59,23 @@ const getLocation = () =>{
   };
   return location;
 };
-export {getRandomNumber, getRandomQuantity, features, myNewFunction, getLocation};
+
+// Используем функцию от tomfun для склонения существительных в рус.яз.
+// https://gist.github.com/tomfun/830fa6d8030d16007bbab50a5b21ef97
+const getNoun = (number, one, two, five) => {
+  let n = Math.abs(number);
+  n %= 100;
+  if (n >= 5 && n <= 20) {
+    return five;
+  }
+  n %= 10;
+  if (n === 1) {
+    return one;
+  }
+  if (n >= 2 && n <= 4) {
+    return two;
+  }
+  return five;
+}
+
+export {getRandomNumber, getRandomQuantity, features, myNewFunction, getLocation, getNoun};

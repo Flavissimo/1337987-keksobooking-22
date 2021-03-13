@@ -30,9 +30,12 @@ const getRandomQuantity = (min, max, precision) => {
   if (precision > 5){
     precision = 5;
   }
-  const randomQuantity = min + ((Math.floor(((Math.random() * (max - min + 1))) * 10 ** precision)) / (10 ** precision));
-  return randomQuantity;
+  return min + ((Math.floor(((Math.random() * (max - min + 1))) * 10 ** precision)) / (10 ** precision));
 }
+// TODO зачем тут переменная?
+//  лучше сразу return min + ((Math.тра-та-та
+
+
 //массив строк — массив случайной длины из значений
 const features = (array) => { //взято: https://learn.javascript.ru/task/shuffle
   for (let i = array.length - 1; i > 0; i--) {
@@ -42,21 +45,41 @@ const features = (array) => { //взято: https://learn.javascript.ru/task/shu
 
   return array;
 };
-
-const myNewFunction = (array1, size) => {
+// TODO исправь имя функции
+const getRandomArray = (array, size) => {
   const photos = [];//новый массив, куда записываем случайный элемент
   for (let i = 0; i < size; i++) {
-    const element = array1[0, getRandomNumber(0, array1.length-1)];
+    const element = array[0, getRandomNumber(0, array.length-1)];
     photos.push(element);
   }
   return photos;
 };
 //координаты в плавающей точкой
 const getLocation = () =>{
-  const location = {
-    x: getRandomQuantity(35.6500, 35.7000, 5),
-    y: getRandomQuantity(139.7000, 139.8000, 5),
+  // TODO замени x и y на lat и lng
+  return {
+    lat: getRandomQuantity(35.6500, 35.7000, 5),
+    lng: getRandomQuantity(139.7000, 139.8000, 5),
   };
-  return location;
 };
-export {getRandomNumber, getRandomQuantity, features, myNewFunction, getLocation};
+
+
+// Используем функцию от tomfun для склонения существительных в рус.яз.
+// https://gist.github.com/tomfun/830fa6d8030d16007bbab50a5b21ef97
+const getNoun = (number, one, two, five) => {
+  let n = Math.abs(number);
+  n %= 100;
+  if (n >= 5 && n <= 20) {
+    return five;
+  }
+  n %= 10;
+  if (n === 1) {
+    return one;
+  }
+  if (n >= 2 && n <= 4) {
+    return two;
+  }
+  return five;
+}
+
+export {getRandomNumber, getRandomQuantity, features, getRandomArray, getLocation, getNoun};

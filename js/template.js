@@ -7,7 +7,7 @@ const TRANSLATED_RUS_TYPES = {
   'house': 'Дом',
   'palace': 'Дворец',
 };
-const map = document.querySelector('#map-canvas');
+
 const popupTemplate = document.querySelector('#card').content;
 
 const getPhotoLinks = (advert, templateImage, templatePhotos) => {
@@ -65,4 +65,4 @@ const createPopup = (advert) => {
   //map.appendChild( popupElement);//добавляем на карту
   return  popupElement;
 }
-export {createPopup, map};
+export {createPopup};

@@ -82,7 +82,7 @@ const typeofDwellingHandler = (evt) => {
   const selectedItem = evt.target.value; //означает выделенный параметр selected (выбранный тип жилья)
   const setting = PRICE_TYPE[selectedItem];//нашли соответствующие параметры в объекте
   if (setting) { //проверка, действительно ли мы параметры нашли
-    minPrice.placeholder = setting.placeholder;//установили их
+    minPrice.placeholder = setting.placeholder;
     minPrice.min = setting.min;
   }
 };

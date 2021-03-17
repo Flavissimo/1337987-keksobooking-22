@@ -100,9 +100,9 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
 });
 
-//заголовок (Помощь друга часть 2)
+//заголовок
 const titleUserInput = form.querySelector('#title');
-//валидация формы заголовка (Помощь друга часть 2)
+//валидация формы заголовка
 titleUserInput.addEventListener('input', (evt) => {
   const valueLength = evt.target.value.length;//получаем значение поля
   titleUserInput.setCustomValidity('');
@@ -115,9 +115,9 @@ titleUserInput.addEventListener('input', (evt) => {
   titleUserInput.reportValidity();
 });
 
-//цена за ночь (Помощь друга часть 2)
+//цена за ночь
 const priceUserInput = form.querySelector('#price');
-//валидация формы цены за ночь (Помощь друга часть 2)
+//валидация формы цены за ночь
 priceUserInput.addEventListener('input', (evt) => {
   const valuePrice = evt.target.value;
   priceUserInput.setCustomValidity('');
@@ -129,9 +129,8 @@ priceUserInput.addEventListener('input', (evt) => {
   }
   priceUserInput.reportValidity();
 });
-/*На пример можно так. ^ это операция XOR - исключающее или.
- Магические значения в константы вынести не забудь.*/
-//комнаты и гости. (Помощь друга часть 2)
+
+//комнаты и гости.
 const ratioOfRoomsToGuests = () => {
   //валидация формы комнат
   if (rooms === 100 ^ guests === 0) {

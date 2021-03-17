@@ -40,29 +40,34 @@ const mainPinMarker = L.marker(//главный маркер
   },
 );
 mainPinMarker.addTo(map);
-
-//создаем иконку для маркера объявлений
-const adPinIcon = L.icon({//большая красна метка
-  iconUrl: 'img/pin.svg',
-  iconSize: [26, 26],
-  iconAnchor: [13, 26],//это координаты кончика хвоста метки
-});
-//добавляем маркер объявления и шаблон!!
-const marker = L.marker(
-  {
-    lat: advert.location.lat,
-    lng: advert.location.lng,
-    icon: adPinIcon,
-  },
-);
-
-marker.addTo(map).bindPopup( //балун
-  createPopup(advert),
-  {
-    keepInView: true,
-  },
-);
-//mainPinMarker.remove();если хотим удалить
+//это должна быть функция т.к. объявлений будет много.
+const getUsersPopupMarker = (popupCard)=>{
+  //создаем иконку для маркера объявлений
+  const adPinIcon = L.icon({//большая красна метка
+    iconUrl: 'img/pin.svg',
+    iconSize: [26, 26],
+    iconAnchor: [13, 26],//это координаты кончика хвоста метки
+  });
+  //добавляем маркер объявления и шаблон!!
+  //иконка не в той секции. посмотри как сделано в mainPin-е
+  const marker = L.marker(
+    {
+      lat: advert.location.lat,
+      lng: advert.location.lng,
+    },
+    {
+      icon: adPinIcon,
+    },
+  );
+  marker.addTo(map).bindPopup( //балун
+    popupCard,//сама карточка товара
+    {
+      keepInView: true,
+    },
+  );
+  //mainPinMarker.remove();если хотим удалить
+};
+getUsersPopupMarker(createPopup(advert));
 
 
 mainPinMarker.on('moveend', (evt) => {

@@ -31,6 +31,13 @@ const typeOfDwelling  = form.querySelector('#type');
 //синхронное время
 const checkIn = form.querySelector('#timein');
 const checkOut = form.querySelector('#timeout');
+//комнаты и гости
+const roomInput = form.querySelector('#room_number');
+const guestInput = form.querySelector('#capacity');
+const rooms = parseInt(roomInput.value, 10);
+//console.log(rooms);
+const guests = parseInt(guestInput.value, 10);
+//console.log(guests);
 
 //функция для координат на карте
 const updateAdress = (coordinates) => {
@@ -122,24 +129,21 @@ priceUserInput.addEventListener('input', (evt) => {
   }
   priceUserInput.reportValidity();
 });
-
-/*//комнаты и гости. Сложновато...думаю (Помощь друга часть 2)
-const roomInput = form.querySelector('#room_number');
-const guestInput = form.querySelector('#capacity');
-//валидация формы комнаты и гостей (Помощь друга часть 2)
-roomInput.addEventListener('change', (evt) => {
-  const selectedRoom = evt.target.value;
-  if (selectedRoom === 100) {
-    guestInput.children.forEach((item) => {
-      if (item.value != 0) {
-        guestInput.setAttribute('disabled');
-      }
-    });
+/*На пример можно так. ^ это операция XOR - исключающее или.
+ Магические значения в константы вынести не забудь.*/
+//комнаты и гости. (Помощь друга часть 2)
+const ratioOfRoomsToGuests = () => {
+  //валидация формы комнат
+  if (rooms === 100 ^ guests === 0) {
+    guestInput.setCustomValidity('Вы выбрали вариант не подходящий для заселения');
+  } else if (rooms < guests) {
+    guestInput.setCustomValidity('Невозможно заселить. Выберите большее количество комнат');
+  } else {
+    guestInput.setCustomValidity('');
   }
-  //console.log(guestInput.value);
-});
-guestInput.addEventListener('input', () => {
-  //const selectedGuest = evt.target.value;
-  //console.log(selectedGuest);
-});*/
+  guestInput.reportValidity();
+}
+roomInput.addEventListener('change', ratioOfRoomsToGuests);
+
+
 export {updateAdress, disableFilterForm, activeFilterForm, disableForm, activeForm};

@@ -1,3 +1,7 @@
+import {onSuccessModal, onErrorModal} from './modal.js';
+import {createFetchPost} from './fetch.js';
+import {resetMainMarker} from './map.js';
+
 const PRICE_TYPE = {//заведем внешний глобальный объект
   bungalow: {
     placeholder: '0',
@@ -16,7 +20,6 @@ const PRICE_TYPE = {//заведем внешний глобальный объ�
     min: 10000,
   },
 }
-//(Помощь друга часть 2)
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
@@ -38,7 +41,8 @@ const rooms = parseInt(roomInput.value, 10);
 //console.log(rooms);
 const guests = parseInt(guestInput.value, 10);
 //console.log(guests);
-
+//кнопка сброса
+const buttonReset = document.querySelector('.ad-form__reset');
 //функция для координат на карте
 const updateAdress = (coordinates) => {
   coordinateInput.value = `${coordinates.lat.toFixed(5)} ${coordinates.lng.toFixed(5)}`;
@@ -142,7 +146,25 @@ const ratioOfRoomsToGuests = () => {
   }
   guestInput.reportValidity();
 }
+
+const onFormReset = () => {
+  form.reset();
+  filterForm.reset();
+  resetMainMarker();
+}
+
 roomInput.addEventListener('change', ratioOfRoomsToGuests);
 
+//отправка формы! Задание 10. Надо подкачаться
+//const setUserFormSubmit = (onSuccess) => {}
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  createFetchPost(evt.target, onSuccessModal, onErrorModal);//функция отправки формы (карточка, успех, провал)
+});
 
-export {updateAdress, disableFilterForm, activeFilterForm, disableForm, activeForm};
+buttonReset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  onFormReset()
+});
+
+export {updateAdress, disableFilterForm, activeFilterForm, disableForm, activeForm, onFormReset};

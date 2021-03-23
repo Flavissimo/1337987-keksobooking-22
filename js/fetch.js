@@ -1,4 +1,4 @@
-import './modal.js';
+// TODO этот импорт тут ненужен
 //создаем функцию, которая возвращает callbackи
 const createFetchGet = (onSuccess, onError) => {
   //получение данных с сервера
@@ -13,12 +13,10 @@ const createFetchGet = (onSuccess, onError) => {
       //console.log(response.status);//посмотреть статус
       //console.log(response.ok);//если ошибка - false
     })
-    .then((json) => { //resolve
-      onSuccess(json);
-    })
-    .catch((err) => {//если ошибка парсинга - прекратит передачу
-      onError(err);
-    });
+  //  TODO давай лучше используем упрощённую запись, А то создавать функцию которая просто вызывает одну другую функцию. Лишний шаг на пути к светлому будущему:)
+    .then(onSuccess)//resolve
+    .catch(onError)//если ошибка парсинга - прекратит передачу
+
 };
 
 //отправка данных на сервер. 10. Надо подкачаться
@@ -34,8 +32,8 @@ const createFetchPost = (data, onSuccess, onError ) => {
     .then((response) => {
       if (response.ok) {
         return;
-      }
-      throw new Error;
+      } // TODO давай добавим какой-нибудь текст ошибки.
+      throw new Error ('Ошибка отправки данных');
     })
     .then(() => { //resolve
       onSuccess();

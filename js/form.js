@@ -44,7 +44,8 @@ const guests = parseInt(guestInput.value, 10);
 //кнопка сброса
 const buttonReset = document.querySelector('.ad-form__reset');
 //функция для координат на карте
-const updateAdress = (coordinates) => {
+// TODO два D в слове address
+const updateAddress = (coordinates) => {
   coordinateInput.value = `${coordinates.lat.toFixed(5)} ${coordinates.lng.toFixed(5)}`;
   //toFixed если нужно опред.кол-во после запятой
 };
@@ -96,6 +97,25 @@ const onChangeOfTime = (evt) => {
   checkIn.value = itemTime;
   checkOut.value = itemTime;
 };
+// TODO перенеси вверх файла к onChangeOfTime
+//комнаты и гости.
+const ratioOfRoomsToGuests = () => {
+  //валидация формы комнат
+  if (rooms === 100 ^ guests === 0) {
+    guestInput.setCustomValidity('Вы выбрали вариант не подходящий для заселения');
+  } else if (rooms < guests) {
+    guestInput.setCustomValidity('Невозможно заселить. Выберите большее количество комнат');
+  } else {
+    guestInput.setCustomValidity('');
+  }
+  guestInput.reportValidity();
+}
+// TODO перенеси вверх файла к onChangeOfTime
+const onFormReset = () => {
+  form.reset();
+  filterForm.reset();
+  resetMainMarker();
+}
 
 checkIn.addEventListener('change', onChangeOfTime);//установка слушателей вконце!
 checkOut.addEventListener('change', onChangeOfTime);
@@ -134,24 +154,6 @@ priceUserInput.addEventListener('input', (evt) => {
   priceUserInput.reportValidity();
 });
 
-//комнаты и гости.
-const ratioOfRoomsToGuests = () => {
-  //валидация формы комнат
-  if (rooms === 100 ^ guests === 0) {
-    guestInput.setCustomValidity('Вы выбрали вариант не подходящий для заселения');
-  } else if (rooms < guests) {
-    guestInput.setCustomValidity('Невозможно заселить. Выберите большее количество комнат');
-  } else {
-    guestInput.setCustomValidity('');
-  }
-  guestInput.reportValidity();
-}
-
-const onFormReset = () => {
-  form.reset();
-  filterForm.reset();
-  resetMainMarker();
-}
 
 roomInput.addEventListener('change', ratioOfRoomsToGuests);
 
@@ -167,4 +169,4 @@ buttonReset.addEventListener('click', (evt) => {
   onFormReset()
 });
 
-export {updateAdress, disableFilterForm, activeFilterForm, disableForm, activeForm, onFormReset};
+export {updateAddress, disableFilterForm, activeFilterForm, disableForm, activeForm, onFormReset};

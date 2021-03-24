@@ -1,7 +1,7 @@
-const HOUSING_PRICE = {
+/*const HOUSING_PRICE = {
   'low':  10000,
   'high': 50000,
-};
+};*/
 
 //фильтр под картой
 const filterForm = document.querySelector('.map__filters');

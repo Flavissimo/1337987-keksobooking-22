@@ -1,4 +1,4 @@
-// TODO этот импорт тут ненужен
+
 //создаем функцию, которая возвращает callbackи
 const createFetchGet = (onSuccess, onError) => {
   //получение данных с сервера

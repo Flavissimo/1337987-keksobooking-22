@@ -1,6 +1,6 @@
 import {onSuccessModal, onErrorModal} from './modal.js';
 import {createFetchPost} from './fetch.js';
-import {resetMainMarker} from './map.js';
+import {resetMainMarker, renderAdverts, resetMarkers} from './map.js';
 
 const PRICE_TYPE = {//заведем внешний глобальный объект
   bungalow: {
@@ -51,20 +51,7 @@ const updateAddress = (coordinates) => {
 };
 
 
-//функция для фильтров под картой неактивная фаза
-const disableFilterForm = () => {
-  filterForm.classList.add('map__filters--disabled');
-  [...filterForm.children].forEach((item) => { //спред оператор
-    item.disabled = true;
-  });
-};
-//функция для фильтров под картой активная фаза
-const activeFilterForm = () => {
-  filterForm.classList.remove('map__filters--disabled');
-  [...filterForm.children].forEach((item) => { //спред оператор
-    item.disabled = false;
-  });
-};
+
 
 //функция для формы неактивная фаза
 const disableForm = () => {
@@ -79,8 +66,22 @@ const activeForm = () => {
   [...form.children].forEach((item) => {
     item.disabled = false;
   });
-
 }
+
+//функция для фильтров под картой неактивная фаза
+const disableFilterForm = () => {
+  filterForm.classList.add('map__filters--disabled');
+  [...filterForm.children].forEach((item) => { //спред оператор
+    item.disabled = true;
+  });
+};
+//функция для фильтров под картой активная фаза
+const activeFilterForm = () => {
+  filterForm.classList.remove('map__filters--disabled');
+  [...filterForm.children].forEach((item) => { //спред оператор
+    item.disabled = false;
+  });
+};
 
 const typeofDwellingHandler = (evt) => {
   const minPrice = document.querySelector('#price');//находим цену
@@ -158,7 +159,6 @@ priceUserInput.addEventListener('input', (evt) => {
 roomInput.addEventListener('change', ratioOfRoomsToGuests);
 
 //отправка формы! Задание 10. Надо подкачаться
-//const setUserFormSubmit = (onSuccess) => {}
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   createFetchPost(evt.target, onSuccessModal, onErrorModal);//функция отправки формы (карточка, успех, провал)
@@ -169,4 +169,12 @@ buttonReset.addEventListener('click', (evt) => {
   onFormReset()
 });
 
-export {updateAddress, disableFilterForm, activeFilterForm, disableForm, activeForm, onFormReset};
+const setFilterFormHandler = (adverts) => {
+  filterForm.addEventListener('change', () => {
+    resetMarkers();
+    renderAdverts(adverts);
+  });
+}
+
+
+export {updateAddress, disableForm, activeForm, onFormReset, disableFilterForm, activeFilterForm, setFilterFormHandler};

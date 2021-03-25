@@ -13,8 +13,7 @@ disableForm();
 
 //создаем функцию, где используем готовую карточку, а информацию берем с сервера
 const renderAdverts = (adverts) => {
-  const copiedArray = adverts.slice();
-  filterArray(copiedArray).slice(0, ADVERTS_QTY).forEach((item) => {
+  filterArray(adverts).slice(0, ADVERTS_QTY).forEach((item) => {
     getUsersPopupMarker(createPopup(item), item);
   });
 }
@@ -96,4 +95,4 @@ mainPinMarker.addTo(map);
 mainPinMarker.on('moveend', (evt) => {
   updateAddress(evt.target.getLatLng());//координаты метки
 });
-export {resetMainMarker, renderAdverts, resetMarkers};
+export {resetMainMarker, renderAdverts, resetMarkers, ADVERTS_QTY};

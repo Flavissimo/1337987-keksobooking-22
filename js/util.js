@@ -29,7 +29,6 @@ const showAlert = (err) => {
   alertContainer.style.fontSize = '30px';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'red';
-
   alertContainer.textContent = `${err} Ошибка загрузки данных об объявлениях с сервера. Попробуйте снова через 5 секунд.`;
 
   document.body.append(alertContainer);

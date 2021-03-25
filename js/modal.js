@@ -1,5 +1,4 @@
 import {onFormReset} from './form.js';
-//10. Надо подкачаться
 //модуль для отправки функции createFetchPost(evt.target, onSuccessModal, onErrorModal);
 const main = document.querySelector('main');
 const templateSuccess = document.querySelector('#success').content;
@@ -19,7 +18,6 @@ const onErrorModal = () => {
 };
 
 //Кнопки отправки. Задание 10. Надо подкачаться
-
 const isEscEvent = (evt) => {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };
@@ -40,14 +38,12 @@ const openModal = () => {
   document.addEventListener('click', onClick);
 };
 
-
 const closeModal = () => {
   if (main.contains(successCard)) {
     main.removeChild(successCard);
   } else {
     main.removeChild(errorCard);
   }
-
   document.removeEventListener('keydown', onPopupEscKeydown);
   document.removeEventListener('click', onClick);
 };

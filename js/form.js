@@ -2,7 +2,7 @@ import {onSuccessModal, onErrorModal} from './modal.js';
 import {createFetchPost} from './fetch.js';
 import {resetMainMarker, renderAdverts, resetMarkers} from './map.js';
 
-const PRICE_TYPE = {//заведем внешний глобальный объект
+const PRICE_TYPE = {
   bungalow: {
     placeholder: '0',
     min: 0,
@@ -20,6 +20,7 @@ const PRICE_TYPE = {//заведем внешний глобальный объ�
     min: 10000,
   },
 }
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
@@ -38,20 +39,13 @@ const checkOut = form.querySelector('#timeout');
 const roomInput = form.querySelector('#room_number');
 const guestInput = form.querySelector('#capacity');
 const rooms = parseInt(roomInput.value, 10);
-//console.log(rooms);
 const guests = parseInt(guestInput.value, 10);
-//console.log(guests);
 //кнопка сброса
 const buttonReset = document.querySelector('.ad-form__reset');
 //функция для координат на карте
-// TODO два D в слове address
 const updateAddress = (coordinates) => {
   coordinateInput.value = `${coordinates.lat.toFixed(5)} ${coordinates.lng.toFixed(5)}`;
-  //toFixed если нужно опред.кол-во после запятой
 };
-
-
-
 
 //функция для формы неактивная фаза
 const disableForm = () => {
@@ -84,10 +78,10 @@ const activeFilterForm = () => {
 };
 
 const typeofDwellingHandler = (evt) => {
-  const minPrice = document.querySelector('#price');//находим цену
-  const selectedItem = evt.target.value; //означает выделенный параметр selected (выбранный тип жилья)
-  const setting = PRICE_TYPE[selectedItem];//нашли соответствующие параметры в объекте
-  if (setting) { //проверка, действительно ли мы параметры нашли
+  const minPrice = document.querySelector('#price');
+  const selectedItem = evt.target.value;
+  const setting = PRICE_TYPE[selectedItem];
+  if (setting) {
     minPrice.placeholder = setting.placeholder;
     minPrice.min = setting.min;
   }
@@ -98,8 +92,7 @@ const onChangeOfTime = (evt) => {
   checkIn.value = itemTime;
   checkOut.value = itemTime;
 };
-// TODO перенеси вверх файла к onChangeOfTime
-//комнаты и гости.
+
 const ratioOfRoomsToGuests = () => {
   //валидация формы комнат
   if (rooms === 100 ^ guests === 0) {
@@ -111,14 +104,14 @@ const ratioOfRoomsToGuests = () => {
   }
   guestInput.reportValidity();
 }
-// TODO перенеси вверх файла к onChangeOfTime
+
 const onFormReset = () => {
   form.reset();
   filterForm.reset();
   resetMainMarker();
 }
 
-checkIn.addEventListener('change', onChangeOfTime);//установка слушателей вконце!
+checkIn.addEventListener('change', onChangeOfTime);
 checkOut.addEventListener('change', onChangeOfTime);
 typeOfDwelling.addEventListener('change', typeofDwellingHandler);
 form.addEventListener('submit', (evt) => {
@@ -129,7 +122,7 @@ form.addEventListener('submit', (evt) => {
 const titleUserInput = form.querySelector('#title');
 //валидация формы заголовка
 titleUserInput.addEventListener('input', (evt) => {
-  const valueLength = evt.target.value.length;//получаем значение поля
+  const valueLength = evt.target.value.length;
   titleUserInput.setCustomValidity('');
   if (valueLength < MIN_TITLE_LENGTH) {
     titleUserInput.setCustomValidity('Ещё ' + (MIN_TITLE_LENGTH - valueLength) +' симв.');
@@ -158,7 +151,7 @@ priceUserInput.addEventListener('input', (evt) => {
 
 roomInput.addEventListener('change', ratioOfRoomsToGuests);
 
-//отправка формы! Задание 10. Надо подкачаться
+//отправка формы
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   createFetchPost(evt.target, onSuccessModal, onErrorModal);//функция отправки формы (карточка, успех, провал)

@@ -11,7 +11,7 @@ const ADVERTS_QTY = 10;
 disableFilterForm();
 disableForm();
 
-//создаем функцию, где используем готовую карточку, а информацию берем с сервера. Функция является колбэком succes createFetchGet(renderAdverts, showAlert);
+//создаем функцию, где используем готовую карточку, а информацию берем с сервера
 const renderAdverts = (adverts) => {
   const copiedArray = adverts.slice();
   filterArray(copiedArray).slice(0, ADVERTS_QTY).forEach((item) => {

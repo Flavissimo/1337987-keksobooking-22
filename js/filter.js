@@ -48,7 +48,7 @@ const validateFeatures = (offer) => {
   return [...selectHouseFeature.querySelectorAll('input:checked')].every((feature) => offer.features.includes(feature.value));
 }
 
-const isSuitableItem = (card) => {
+const createSuitableItem = (card) => {
   const offer = card.offer;
   return validatePrice(offer) &&
     validateType(offer) &&
@@ -61,7 +61,7 @@ const isSuitableItem = (card) => {
 const filterArray = (cards) => {
   const filteredCards = [];
   for (let card of cards) {
-    if (isSuitableItem(card)) {
+    if (createSuitableItem(card)) {
       filteredCards.push(card);
       if (filteredCards.length >= ADVERTS_QTY) {
         break;

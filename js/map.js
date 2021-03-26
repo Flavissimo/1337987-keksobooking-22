@@ -1,5 +1,5 @@
 /* global L:readonly */
-import {updateAddress, disableForm, activeForm, disableFilterForm, activeFilterForm, setFilterFormHandler, setButtonResetHandler, setSubmitHandler} from './form.js';
+import {updateAddress, disableUsersAdForm , activateUsersAdForm, disableUsersСhoiceFilter, activateUsersСhoiceFilter, setFilterForm, setButtonReset, setSubmitForm} from './form.js';
 import {filterArray} from './filter.js';
 import {createPopup} from './template.js';
 import {createFetchGet} from './fetch.js';
@@ -8,8 +8,8 @@ const TOKYO_CITY_CENTER_COORDS = {lat: 35.68950, lng: 139.69171};
 const ZOOM = 10;
 const ADVERTS_QTY = 10;
 
-disableFilterForm();
-disableForm();
+disableUsersСhoiceFilter();
+disableUsersAdForm ();
 
 const renderAdverts = (adverts) => {
   filterArray(adverts).slice(0, ADVERTS_QTY).forEach((item) => {
@@ -53,15 +53,15 @@ const resetMainMarker = () => {
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    activeForm();
+    activateUsersAdForm();
     updateAddress(TOKYO_CITY_CENTER_COORDS);
     createFetchGet((ads) => {
-      activeFilterForm();
+      activateUsersСhoiceFilter();
       const adverts = ads.slice();
       renderAdverts(adverts);
-      setFilterFormHandler(adverts);
-      setButtonResetHandler(adverts);
-      setSubmitHandler(adverts);
+      setFilterForm(adverts);
+      setButtonReset(adverts);
+      setSubmitForm(adverts);
     }, showAlert);
   })
   .setView(

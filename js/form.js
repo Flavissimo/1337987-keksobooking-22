@@ -1,8 +1,8 @@
-import {onSuccessModal, onErrorModal} from './modal.js';
+import {createSuccessModal, createErrorModal} from './modal.js';
 import {createFetchPost} from './fetch.js';
 import {resetMainMarker, renderAdverts, resetMarkers} from './map.js';
 
-const PRICE_TYPE = {
+const PriceType = {
   bungalow: {
     placeholder: '0',
     min: 0,
@@ -47,14 +47,14 @@ const updateAddress = (coordinates) => {
 };
 
 
-const disableForm = () => {
+const disableUsersAdForm = () => {
   form.classList.add('ad-form--disabled');
   [...form.children].forEach((item) => {
     item.disabled = true;
   });
 }
 
-const activeForm = () => {
+const activateUsersAdForm = () => {
   form.classList.remove('ad-form--disabled');
   [...form.children].forEach((item) => {
     item.disabled = false;
@@ -62,36 +62,46 @@ const activeForm = () => {
 }
 
 
-const disableFilterForm = () => {
+const disableUsersСhoiceFilter = () => {
   filterForm.classList.add('map__filters--disabled');
   [...filterForm.children].forEach((item) => {
     item.disabled = true;
   });
 };
 
-const activeFilterForm = () => {
+const activateUsersСhoiceFilter = () => {
   filterForm.classList.remove('map__filters--disabled');
   [...filterForm.children].forEach((item) => {
     item.disabled = false;
   });
 };
 
-const onTypeofDwellingHandler = () => {
+const chooseTypeOfDwelling = () => {
   const selectedItem = typeOfDwelling.value;
-  const setting = PRICE_TYPE[selectedItem];
+  const setting = PriceType[selectedItem];
   if (setting) {
     minInput.placeholder = setting.placeholder;
     minInput.min = setting.min;
   }
 };
 
-const onChangeOfTime = (evt) => {
-  const itemTime = evt.target.value;
-  checkIn.value = itemTime;
-  checkOut.value = itemTime;
+const сhangeTimeOfCheckIn = (evt) => {
+  const itemTimeCheckIn = evt.target.value;
+  checkIn.value = itemTimeCheckIn;
+  if (checkIn.value ) {
+    checkOut.value = checkIn.value;
+  }
 };
 
-const onratioOfRoomsToGuests = () => {
+const сhangeTimeOfCheckOut = (evt) => {
+  const itemTimeCheckOut = evt.target.value;
+  checkOut.value = itemTimeCheckOut;
+  if (checkOut.value) {
+    checkIn.value = checkOut.value
+  }
+};
+
+const onRatioChangeGuest = () => {
   const rooms = parseInt(roomInput.value, 10);
   const guests = parseInt(guestInput.value, 10);
   if (rooms === 100 ^ guests === 0) {
@@ -104,7 +114,20 @@ const onratioOfRoomsToGuests = () => {
   guestInput.reportValidity();
 }
 
-const onFormReset = (adverts) => {
+const onRatioChangeRooms = () => {
+  const rooms = parseInt(roomInput.value, 10);
+  const guests = parseInt(guestInput.value, 10);
+  if (guests === 0 ^ rooms === 100) {
+    guestInput.setCustomValidity('Вы выбрали вариант не подходящий для заселения');
+  } else if (guests > rooms) {
+    guestInput.setCustomValidity('Невозможно заселить. Выберите меньшее количество гостей');
+  } else {
+    guestInput.setCustomValidity('');
+  }
+  guestInput.reportValidity();
+}
+
+const getAllFormReset = (adverts) => {
   form.reset();
   filterForm.reset();
   resetMainMarker();
@@ -112,35 +135,37 @@ const onFormReset = (adverts) => {
   renderAdverts(adverts);
 }
 
-const setSubmitHandler = (adverts) => {
+const setSubmitForm = (adverts) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    onTypeofDwellingHandler();
+    chooseTypeOfDwelling();
     if (form.checkValidity()) {
-      createFetchPost(evt.target, () => onSuccessModal(adverts), onErrorModal);
+      createFetchPost(evt.target, () => createSuccessModal(adverts), createErrorModal);
     } else {
       form.reportValidity();
     }
   });
 }
 
-const setButtonResetHandler = (adverts) => {
+const setButtonReset = (adverts) => {
   buttonReset.addEventListener('click', (evt) => {
     evt.preventDefault();
-    onFormReset(adverts)
+    getAllFormReset(adverts)
   });
 }
 
-const setFilterFormHandler = (adverts) => {
+const setFilterForm = (adverts) => {
   filterForm.addEventListener('change', () => {
     resetMarkers();
     renderAdverts(adverts);
   });
 }
 
-checkIn.addEventListener('change', onChangeOfTime);
-checkOut.addEventListener('change', onChangeOfTime);
-typeOfDwelling.addEventListener('change', onTypeofDwellingHandler);
+checkIn.addEventListener('change', сhangeTimeOfCheckIn);
+checkOut.addEventListener('change', сhangeTimeOfCheckOut);
+typeOfDwelling.addEventListener('change', () => {
+  chooseTypeOfDwelling();
+});
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
 });
@@ -175,8 +200,8 @@ priceUserInput.addEventListener('input', (evt) => {
 });
 
 
-roomInput.addEventListener('change', onratioOfRoomsToGuests);
+roomInput.addEventListener('change', onRatioChangeGuest);
+guestInput.addEventListener('change', onRatioChangeRooms);
 
 
-
-export {updateAddress, disableForm, activeForm, onFormReset, disableFilterForm, activeFilterForm, setFilterFormHandler, setButtonResetHandler, setSubmitHandler};
+export {updateAddress, disableUsersAdForm , activateUsersAdForm, getAllFormReset, disableUsersСhoiceFilter, activateUsersСhoiceFilter, setFilterForm, setButtonReset, setSubmitForm};

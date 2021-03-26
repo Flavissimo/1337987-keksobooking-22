@@ -1,4 +1,4 @@
-const createFetchGet = (onSuccess, onError) => {
+const createFetchGet = (Success, Error) => {
   return fetch('https://22.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {
@@ -6,11 +6,11 @@ const createFetchGet = (onSuccess, onError) => {
       }
       throw new Error(`${response.status} ${response.statusText}`);
     })
-    .then(onSuccess)
-    .catch(onError)
+    .then(Success)
+    .catch(Error)
 };
 
-const createFetchPost = (data, onSuccess, onError ) => {
+const createFetchPost = (data, Success, Error ) => {
   const formData = new FormData(data);
   fetch(
     'https://22.javascript.pages.academy/keksobooking',
@@ -26,10 +26,10 @@ const createFetchPost = (data, onSuccess, onError ) => {
       throw new Error ('Ошибка отправки данных');
     })
     .then(() => {
-      onSuccess();
+      Success();
     })
     .catch(() => {
-      onError();
+      Error();
     });
 };
 

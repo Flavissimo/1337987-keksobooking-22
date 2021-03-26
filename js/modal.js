@@ -1,4 +1,4 @@
-import {onFormReset} from './form.js';
+import {getAllFormReset} from './form.js';
 
 const main = document.querySelector('main');
 const templateSuccess = document.querySelector('#success').content;
@@ -6,13 +6,13 @@ const successCard = templateSuccess.querySelector('.success').cloneNode(true);
 const templateError = document.querySelector('#error').content;
 const errorCard = templateError.querySelector('.error').cloneNode(true);
 
-const onSuccessModal = (adverts) => {
-  onFormReset(adverts);
+const createSuccessModal = (adverts) => {
+  getAllFormReset(adverts);
   main.appendChild(successCard);
   openModal();
 };
 
-const onErrorModal = () => {
+const createErrorModal = () => {
   main.appendChild(errorCard);
   openModal();
 };
@@ -49,4 +49,4 @@ const closeModal = () => {
 };
 
 
-export {onSuccessModal, onErrorModal};
+export {createSuccessModal, createErrorModal};

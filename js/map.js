@@ -1,17 +1,19 @@
 /* global L:readonly */
-import {updateAddress, disableFilterForm, activeFilterForm, disableForm, activeForm} from './form.js';
+import {updateAddress, disableForm, activeForm, disableFilterForm, activeFilterForm, setFilterFormHandler} from './form.js';
+import {filterArray} from './filter.js';
 import {createPopup} from './template.js';
 import {createFetchGet} from './fetch.js';
 import {showAlert} from './util.js';
 const TOKYO_CITY_CENTER_COORDS = {lat: 35.68950, lng: 139.69171};
 const ZOOM = 10;
+const ADVERTS_QTY = 10;
 //блокировка фильтров и формы
 disableFilterForm();
 disableForm();
 
-//создаем функцию, где используем готовую карточку, а информацию берем с сервера. Функция является колбэком succes createFetchGet(renderAdverts, showAlert);
+//создаем функцию, где используем готовую карточку, а информацию берем с сервера
 const renderAdverts = (adverts) => {
-  adverts.forEach((item) => {
+  filterArray(adverts).slice(0, ADVERTS_QTY).forEach((item) => {
     getUsersPopupMarker(createPopup(item), item);
   });
 }
@@ -36,7 +38,7 @@ const getUsersPopupMarker = (popupCard, advert) => {
       icon: adPinIcon,
     },
   );
-  marker.addTo(map).bindPopup( //балун
+  marker.addTo(adLayer).bindPopup( //балун
     popupCard,//сама карточка товара
     {
       keepInView: true,
@@ -44,7 +46,9 @@ const getUsersPopupMarker = (popupCard, advert) => {
   );
   //mainPinMarker.remove();если хотим удалить
 };
-
+const resetMarkers = () => {
+  adLayer.clearLayers();
+}
 // TODO перенеси эту функцию вверх файла к рядом с renderAdverts. Пусть объявления функций будут рядом
 const resetMainMarker = () => {
   mainPinMarker.setLatLng(TOKYO_CITY_CENTER_COORDS);
@@ -53,10 +57,14 @@ const resetMainMarker = () => {
 
 const map = L.map('map-canvas')
   .on('load', () => {//когда карта будет готова
-    activeFilterForm();
     activeForm();
     updateAddress(TOKYO_CITY_CENTER_COORDS);
-    createFetchGet(renderAdverts, showAlert);
+    createFetchGet((ads) => {
+      activeFilterForm();
+      const adverts = ads.slice();
+      renderAdverts(adverts);
+      setFilterFormHandler(adverts);
+    }, showAlert);
   })
   .setView(//устанавливаем представление о карте
     TOKYO_CITY_CENTER_COORDS, ZOOM);
@@ -66,6 +74,8 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
+
+const adLayer = L.layerGroup().addTo(map);//создание слоя для будущего добавления меток на карту
 
 const mainPinIcon = L.icon({//большая красна метка
   iconUrl: 'img/main-pin.svg',
@@ -85,4 +95,4 @@ mainPinMarker.addTo(map);
 mainPinMarker.on('moveend', (evt) => {
   updateAddress(evt.target.getLatLng());//координаты метки
 });
-export {resetMainMarker};
+export {resetMainMarker, renderAdverts, resetMarkers, ADVERTS_QTY};

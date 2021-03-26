@@ -107,7 +107,7 @@ const onRatioChangeGuest = () => {
   if (rooms === 100 ^ guests === 0) {
     guestInput.setCustomValidity('Вы выбрали вариант не подходящий для заселения');
   } else if (rooms < guests) {
-    guestInput.setCustomValidity('Невозможно заселить. Выберите большее количество комнат');
+    guestInput.setCustomValidity('Невозможно заселить. Выберите меньшее количество гостей');
   } else {
     guestInput.setCustomValidity('');
   }
@@ -118,13 +118,13 @@ const onRatioChangeRooms = () => {
   const rooms = parseInt(roomInput.value, 10);
   const guests = parseInt(guestInput.value, 10);
   if (guests === 0 ^ rooms === 100) {
-    guestInput.setCustomValidity('Вы выбрали вариант не подходящий для заселения');
+    roomInput.setCustomValidity('Вы выбрали вариант не подходящий для заселения');
   } else if (guests > rooms) {
-    guestInput.setCustomValidity('Невозможно заселить. Выберите меньшее количество гостей');
+    roomInput.setCustomValidity('Невозможно заселить. Выберите большее количество комнат');
   } else {
-    guestInput.setCustomValidity('');
+    roomInput.setCustomValidity('');
   }
-  guestInput.reportValidity();
+  roomInput.reportValidity();
 }
 
 const getAllFormReset = (adverts) => {

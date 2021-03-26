@@ -14,7 +14,7 @@ const PriceRange = {
     MAX: Infinity,
   },
 };
-//фильтр под картой
+
 const filterForm = document.querySelector('.map__filters');
 
 const selectHouseType = filterForm.querySelector('#housing-type');

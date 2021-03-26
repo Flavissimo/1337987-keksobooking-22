@@ -1,13 +1,13 @@
 import {onFormReset} from './form.js';
-//модуль для отправки функции createFetchPost(evt.target, onSuccessModal, onErrorModal);
+
 const main = document.querySelector('main');
 const templateSuccess = document.querySelector('#success').content;
 const successCard = templateSuccess.querySelector('.success').cloneNode(true);
 const templateError = document.querySelector('#error').content;
 const errorCard = templateError.querySelector('.error').cloneNode(true);
 
-const onSuccessModal = () => {
-  onFormReset();
+const onSuccessModal = (adverts) => {
+  onFormReset(adverts);
   main.appendChild(successCard);
   openModal();
 };
@@ -17,7 +17,7 @@ const onErrorModal = () => {
   openModal();
 };
 
-//Кнопки отправки. Задание 10. Надо подкачаться
+
 const isEscEvent = (evt) => {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };

@@ -1,4 +1,3 @@
-//функцию, которая возвращает callbackи
 const createFetchGet = (onSuccess, onError) => {
   return fetch('https://22.javascript.pages.academy/keksobooking/data')
     .then((response) => {
@@ -11,7 +10,6 @@ const createFetchGet = (onSuccess, onError) => {
     .catch(onError)
 };
 
-//отправка данных на сервер
 const createFetchPost = (data, onSuccess, onError ) => {
   const formData = new FormData(data);
   fetch(

@@ -1,4 +1,3 @@
-
 import {getNoun} from './util.js';
 
 const TRANSLATED_RUS_TYPES = {
@@ -13,7 +12,6 @@ const popupTemplate = document.querySelector('#card').content;
 const getPhotoLinks = (advert, templateImage, templatePhotos) => {
   const photoLinks = advert.offer.photos;
   const container = document.createDocumentFragment();
-  // TODO если photoLinks вообще отсутствует в данных то при обращении к нему вернётся undefined
   (photoLinks || []).forEach((link) => {
     const newImage = templateImage.cloneNode();
     newImage.src = link;
@@ -21,11 +19,11 @@ const getPhotoLinks = (advert, templateImage, templatePhotos) => {
   });
   templatePhotos.innerHTML = '';
 
-  templatePhotos.appendChild(container);//добавляем заполненный шаблон в код <img>
+  templatePhotos.appendChild(container);
 };
 
 const createFeatures = (features, templateFeatures) => {
-  templateFeatures.innerHTML = '';//вычищаем HTML
+  templateFeatures.innerHTML = '';
   const listContainer = document.createDocumentFragment();
   (features || []).forEach((feature) => {
     const featureElement = document.createElement('li');
@@ -35,12 +33,11 @@ const createFeatures = (features, templateFeatures) => {
     listContainer.appendChild(featureElement);
   });
   templateFeatures.appendChild(listContainer);
-  //return listContainer;//готовый фрагмент с li c меняющимися классом
 }
 
 const createPopup = (advert) => {
   const popupElement = popupTemplate.cloneNode(true);
-  //устанавливаем конкретные параметры в найденных элементах с определенными классами
+
   popupElement.querySelector('.popup__title').textContent = advert.offer.title;
   popupElement.querySelector('.popup__text--address').textContent = advert.offer.address;
   popupElement.querySelector('.popup__text--price').textContent = `${advert.offer.price} ₽/ночь`;
@@ -59,10 +56,8 @@ const createPopup = (advert) => {
     templateCapacity.textContent = (`${advert.offer.rooms} ${roomEnding} для ${advert.offer.guests} ${guestEnding}`);
   }
 
-  getPhotoLinks(advert, templateImage, templatePhotos);//генерация ссылок у фото
-  createFeatures(advert.offer.features, templateFeatures); //функция createFeatures
-  //параметры features = advert.offer.features;//templateFeatures - наш фрагмент HTML
-  //map.appendChild( popupElement);//добавляем на карту
+  getPhotoLinks(advert, templateImage, templatePhotos);
+  createFeatures(advert.offer.features, templateFeatures);
   return  popupElement;
 }
 export {createPopup};

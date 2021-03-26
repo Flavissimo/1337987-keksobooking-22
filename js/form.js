@@ -24,37 +24,36 @@ const PRICE_TYPE = {
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
-//форма
+
 const form = document.querySelector('.ad-form');
-//фильтр под картой
+
 const filterForm = document.querySelector('.map__filters');
-//координаты жилья
+
 const coordinateInput = form.querySelector('#address');
-//типы жилья, вывести выбранный тип
+
 const typeOfDwelling  = form.querySelector('#type');
-//синхронное время
+
 const checkIn = form.querySelector('#timein');
 const checkOut = form.querySelector('#timeout');
-//комнаты и гости
+
 const roomInput = form.querySelector('#room_number');
 const guestInput = form.querySelector('#capacity');
-const rooms = parseInt(roomInput.value, 10);
-const guests = parseInt(guestInput.value, 10);
-//кнопка сброса
+const minInput = form.querySelector('#price');
+
 const buttonReset = document.querySelector('.ad-form__reset');
-//функция для координат на карте
+
 const updateAddress = (coordinates) => {
   coordinateInput.value = `${coordinates.lat.toFixed(5)} ${coordinates.lng.toFixed(5)}`;
 };
 
-//функция для формы неактивная фаза
+
 const disableForm = () => {
   form.classList.add('ad-form--disabled');
   [...form.children].forEach((item) => {
     item.disabled = true;
   });
 }
-//функция для формы активная фаза
+
 const activeForm = () => {
   form.classList.remove('ad-form--disabled');
   [...form.children].forEach((item) => {
@@ -62,28 +61,27 @@ const activeForm = () => {
   });
 }
 
-//функция для фильтров под картой неактивная фаза
+
 const disableFilterForm = () => {
   filterForm.classList.add('map__filters--disabled');
-  [...filterForm.children].forEach((item) => { //спред оператор
+  [...filterForm.children].forEach((item) => {
     item.disabled = true;
   });
 };
-//функция для фильтров под картой активная фаза
+
 const activeFilterForm = () => {
   filterForm.classList.remove('map__filters--disabled');
-  [...filterForm.children].forEach((item) => { //спред оператор
+  [...filterForm.children].forEach((item) => {
     item.disabled = false;
   });
 };
 
-const typeofDwellingHandler = (evt) => {
-  const minPrice = document.querySelector('#price');
-  const selectedItem = evt.target.value;
+const onTypeofDwellingHandler = () => {
+  const selectedItem = typeOfDwelling.value;
   const setting = PRICE_TYPE[selectedItem];
   if (setting) {
-    minPrice.placeholder = setting.placeholder;
-    minPrice.min = setting.min;
+    minInput.placeholder = setting.placeholder;
+    minInput.min = setting.min;
   }
 };
 
@@ -93,8 +91,9 @@ const onChangeOfTime = (evt) => {
   checkOut.value = itemTime;
 };
 
-const ratioOfRoomsToGuests = () => {
-  //валидация формы комнат
+const onratioOfRoomsToGuests = () => {
+  const rooms = parseInt(roomInput.value, 10);
+  const guests = parseInt(guestInput.value, 10);
   if (rooms === 100 ^ guests === 0) {
     guestInput.setCustomValidity('Вы выбрали вариант не подходящий для заселения');
   } else if (rooms < guests) {
@@ -105,22 +104,49 @@ const ratioOfRoomsToGuests = () => {
   guestInput.reportValidity();
 }
 
-const onFormReset = () => {
+const onFormReset = (adverts) => {
   form.reset();
   filterForm.reset();
   resetMainMarker();
+  resetMarkers();
+  renderAdverts(adverts);
+}
+
+const setSubmitHandler = (adverts) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    onTypeofDwellingHandler();
+    if (form.checkValidity()) {
+      createFetchPost(evt.target, () => onSuccessModal(adverts), onErrorModal);
+    } else {
+      form.reportValidity();
+    }
+  });
+}
+
+const setButtonResetHandler = (adverts) => {
+  buttonReset.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    onFormReset(adverts)
+  });
+}
+
+const setFilterFormHandler = (adverts) => {
+  filterForm.addEventListener('change', () => {
+    resetMarkers();
+    renderAdverts(adverts);
+  });
 }
 
 checkIn.addEventListener('change', onChangeOfTime);
 checkOut.addEventListener('change', onChangeOfTime);
-typeOfDwelling.addEventListener('change', typeofDwellingHandler);
+typeOfDwelling.addEventListener('change', onTypeofDwellingHandler);
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
 });
 
-//заголовок
 const titleUserInput = form.querySelector('#title');
-//валидация формы заголовка
+
 titleUserInput.addEventListener('input', (evt) => {
   const valueLength = evt.target.value.length;
   titleUserInput.setCustomValidity('');
@@ -133,9 +159,9 @@ titleUserInput.addEventListener('input', (evt) => {
   titleUserInput.reportValidity();
 });
 
-//цена за ночь
+
 const priceUserInput = form.querySelector('#price');
-//валидация формы цены за ночь
+
 priceUserInput.addEventListener('input', (evt) => {
   const valuePrice = evt.target.value;
   priceUserInput.setCustomValidity('');
@@ -149,25 +175,8 @@ priceUserInput.addEventListener('input', (evt) => {
 });
 
 
-roomInput.addEventListener('change', ratioOfRoomsToGuests);
-
-//отправка формы
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  createFetchPost(evt.target, onSuccessModal, onErrorModal);//функция отправки формы (карточка, успех, провал)
-});
-
-buttonReset.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  onFormReset()
-});
-
-const setFilterFormHandler = (adverts) => {
-  filterForm.addEventListener('change', () => {
-    resetMarkers();
-    renderAdverts(adverts);
-  });
-}
+roomInput.addEventListener('change', onratioOfRoomsToGuests);
 
 
-export {updateAddress, disableForm, activeForm, onFormReset, disableFilterForm, activeFilterForm, setFilterFormHandler};
+
+export {updateAddress, disableForm, activeForm, onFormReset, disableFilterForm, activeFilterForm, setFilterFormHandler, setButtonResetHandler, setSubmitHandler};

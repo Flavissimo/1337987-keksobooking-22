@@ -1,5 +1,5 @@
 /* global L:readonly */
-import {updateAddress, disableForm, activeForm, disableFilterForm, activeFilterForm, setFilterFormHandler} from './form.js';
+import {updateAddress, disableForm, activeForm, disableFilterForm, activeFilterForm, setFilterFormHandler, setButtonResetHandler, setSubmitHandler} from './form.js';
 import {filterArray} from './filter.js';
 import {createPopup} from './template.js';
 import {createFetchGet} from './fetch.js';
@@ -7,28 +7,24 @@ import {showAlert} from './util.js';
 const TOKYO_CITY_CENTER_COORDS = {lat: 35.68950, lng: 139.69171};
 const ZOOM = 10;
 const ADVERTS_QTY = 10;
-//блокировка фильтров и формы
+
 disableFilterForm();
 disableForm();
 
-//создаем функцию, где используем готовую карточку, а информацию берем с сервера
 const renderAdverts = (adverts) => {
   filterArray(adverts).slice(0, ADVERTS_QTY).forEach((item) => {
     getUsersPopupMarker(createPopup(item), item);
   });
 }
 
-// TODO перенеси эту функцию вверх файла к рядом с renderAdverts. Пусть объявления функций будут рядом
-//это должна быть функция т.к. объявлений будет много.
 const getUsersPopupMarker = (popupCard, advert) => {
-  //создаем иконку для маркера объявлений
-  const adPinIcon = L.icon({//большая красна метка
+
+  const adPinIcon = L.icon({
     iconUrl: 'img/pin.svg',
     iconSize: [26, 26],
-    iconAnchor: [13, 26],//это координаты кончика хвоста метки
+    iconAnchor: [13, 26],
   });
-  //добавляем маркер объявления и шаблон!!
-  //иконка не в той секции. посмотри как сделано в mainPin-е
+
   const marker = L.marker(
     {
       lat: advert.location.lat,
@@ -38,25 +34,25 @@ const getUsersPopupMarker = (popupCard, advert) => {
       icon: adPinIcon,
     },
   );
-  marker.addTo(adLayer).bindPopup( //балун
-    popupCard,//сама карточка товара
+  marker.addTo(adLayer).bindPopup(
+    popupCard,
     {
       keepInView: true,
     },
   );
-  //mainPinMarker.remove();если хотим удалить
+
 };
 const resetMarkers = () => {
   adLayer.clearLayers();
 }
-// TODO перенеси эту функцию вверх файла к рядом с renderAdverts. Пусть объявления функций будут рядом
+
 const resetMainMarker = () => {
   mainPinMarker.setLatLng(TOKYO_CITY_CENTER_COORDS);
   updateAddress(TOKYO_CITY_CENTER_COORDS);
 }
 
 const map = L.map('map-canvas')
-  .on('load', () => {//когда карта будет готова
+  .on('load', () => {
     activeForm();
     updateAddress(TOKYO_CITY_CENTER_COORDS);
     createFetchGet((ads) => {
@@ -64,9 +60,11 @@ const map = L.map('map-canvas')
       const adverts = ads.slice();
       renderAdverts(adverts);
       setFilterFormHandler(adverts);
+      setButtonResetHandler(adverts);
+      setSubmitHandler(adverts);
     }, showAlert);
   })
-  .setView(//устанавливаем представление о карте
+  .setView(
     TOKYO_CITY_CENTER_COORDS, ZOOM);
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -75,24 +73,24 @@ L.tileLayer(
   },
 ).addTo(map);
 
-const adLayer = L.layerGroup().addTo(map);//создание слоя для будущего добавления меток на карту
+const adLayer = L.layerGroup().addTo(map);
 
-const mainPinIcon = L.icon({//большая красна метка
+const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
   iconSize: [52, 52],
-  iconAnchor: [26, 52],//это координаты кончика хвоста метки
+  iconAnchor: [26, 52],
 });
 
-const mainPinMarker = L.marker(//главный маркер
+const mainPinMarker = L.marker(
   TOKYO_CITY_CENTER_COORDS,
   {
-    draggable: true, //маркер можно передвигать по карте
-    icon: mainPinIcon,//добавляем иконку
+    draggable: true,
+    icon: mainPinIcon,
   },
 );
 mainPinMarker.addTo(map);
 
 mainPinMarker.on('moveend', (evt) => {
-  updateAddress(evt.target.getLatLng());//координаты метки
+  updateAddress(evt.target.getLatLng());
 });
 export {resetMainMarker, renderAdverts, resetMarkers, ADVERTS_QTY};

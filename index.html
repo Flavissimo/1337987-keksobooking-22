@@ -16,13 +16,10 @@
       <img src="img/keksobooking.svg" alt="Keksobooking. Кексы по соседству" width="215" height="45">
     </div>
 
-    <!-- Карта объявлений -->
     <section class="map">
 
-      <!-- Блок для вставки карты -->
       <div class="map__canvas" id="map-canvas"></div>
 
-      <!-- Фильтрация объявлений -->
       <div class="map__filters-container">
         <form  method="#"  class="map__filters" autocomplete="off" >
           <select name="housing-type" id="housing-type" class="map__filter">
@@ -68,7 +65,6 @@
       </div>
     </section>
 
-    <!-- Форма объявления -->
     <section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
       <form class="ad-form" method="post" enctype="multipart/form-data" action="https://22.javascript.pages.academy/keksobooking" autocomplete="off">
@@ -131,9 +127,9 @@
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="capacity">Количество мест</label>
           <select id="capacity" name="capacity">
-            <option value="3" selected>для 3 гостей</option>
+            <option value="3">для 3 гостей</option>
             <option value="2">для 2 гостей</option>
-            <option value="1">для 1 гостя</option>
+            <option value="1" selected>для 1 гостя</option>
             <option value="0">не для гостей</option>
           </select>
         </fieldset>
@@ -189,7 +185,6 @@
     </ul>
   </footer>
 
-  <!-- Карточка объявления -->
   <template id="card">
     <article class="popup">
       <img src="img/avatars/user01.png" class="popup__avatar" width="70" height="70" alt="Аватар пользователя">
@@ -214,14 +209,12 @@
     </article>
   </template>
 
-  <!-- Сообщение об успешном создании объявления -->
   <template id="success">
     <div class="success">
       <p class="success__message">Ваше объявление<br>успешно размещено!</p>
     </div>
   </template>
 
-  <!-- Сообщение об ошибке создания объявления -->
   <template id="error">
     <div class="error">
       <p class="error__message">Ошибка размещения объявления</p>

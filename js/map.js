@@ -1,5 +1,5 @@
 /* global L:readonly */
-import {updateAddress, disableUsersAdForm , activateUsersAdForm, disableUsersСhoiceFilter, activateUsersСhoiceFilter, setFilterForm, setButtonReset, setSubmitForm} from './form.js';
+import {updateAddress, disableUsersAdForm , activateUsersAdForm, disableUsersChoiceFilter, activateUsersChoiceFilter, setFilterForm, setButtonReset, setSubmitForm} from './form.js';
 import {filterArray} from './filter.js';
 import {createPopup} from './template.js';
 import {createFetchGet} from './fetch.js';
@@ -8,7 +8,7 @@ const TOKYO_CITY_CENTER_COORDS = {lat: 35.68950, lng: 139.69171};
 const ZOOM = 10;
 const ADVERTS_QTY = 10;
 
-disableUsersСhoiceFilter();
+disableUsersChoiceFilter();
 disableUsersAdForm ();
 
 const renderAdverts = (adverts) => {
@@ -55,9 +55,8 @@ const map = L.map('map-canvas')
   .on('load', () => {
     activateUsersAdForm();
     updateAddress(TOKYO_CITY_CENTER_COORDS);
-    createFetchGet((ads) => {
-      activateUsersСhoiceFilter();
-      const adverts = ads.slice();
+    createFetchGet((adverts) => {
+      activateUsersChoiceFilter();
       renderAdverts(adverts);
       setFilterForm(adverts);
       setButtonReset(adverts);
